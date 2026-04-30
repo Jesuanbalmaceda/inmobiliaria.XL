@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XL Inmobiliaria · Gestión Interna</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --negro: #0a0a0a;
+    --blanco: #fafaf8;
+    --crema: #f2ede6;
+    --gris-claro: #e8e3db;
+    --gris-medio: #b8b0a4;
+    --gris: #6b635a;
+    --acento: #1a1a1a;
+    --oro: #c9a96e;
+    --oro-suave: #e8d5b0;
+    --verde: #2d5a3d;
+    --rojo: #8b2635;
+    --azul: #1e3a5f;
+    --sombra: 0 2px 20px rgba(0,0,0,0.08);
+    --sombra-card: 0 4px 40px rgba(0,0,0,0.12);
+    --radio: 2px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--crema);
+    color: var(--negro);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* ===== LOGIN ===== */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--negro);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #login-screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(201,169,110,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 50%, rgba(201,169,110,0.05) 0%, transparent 60%);
+  }
+
+  .login-box {
+    background: var(--blanco);
+    width: 400px;
+    padding: 56px 48px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(24px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  .login-logo {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .login-logo svg { width: 90px; height: 90px; }
+
+  .login-logo .brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--negro);
+    margin-top: 12px;
+    display: block;
+  }
+
+  .login-logo .brand-sub {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--gris);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .login-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--oro);
+    margin: 16px auto;
+  }
+
+  .field-group { margin-bottom: 20px; }
+
+  .field-group label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gris);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .field-group input, .field-group select, .field-group textarea {
+    width: 100%;
+    border: 1px solid var(--gris-claro);
+    background: var(--blanco);
+    padding: 12px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--negro);
+    outline: none;
+    transition: border-color 0.2s;
+    border-radius: var(--radio);
+  }
+
+  .field-group input:focus, .field-group select:focus, .field-group textarea:focus {
+    border-color: var(--oro);
+  }
+
+  .btn-primary {
+    width: 100%;
+    background: var(--negro);
+    color: var(--blanco);
+    border: none;
+    padding: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: var(--radio);
+    font-weight: 500;
+  }
+
+  .btn-primary:hover { background: var(--gris); }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--gris-claro);
+    color: var(--negro);
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: var(--radio);
+  }
+
+  .btn-secondary:hover { border-color: var(--negro); }
+
+  .btn-danger {
+    background: var(--rojo);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: var(--radio);
+  }
+
+  .btn-gold {
+    background: var(--oro);
+    color: var(--negro);
+    border: none;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    border-radius: var(--radio);
+    font-weight: 500;
+  }
+
+  .btn-gold:hover { opacity: 0.85; }
+
+  .login-error {
+    color: var(--rojo);
+    font-size: 12px;
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  /* ===== APP SHELL ===== */
+  #app { display: none; flex-direction: column; min-height: 100vh; }
+
+  /* TOPBAR */
+  .topbar {
+    background: var(--negro);
+    color: var(--blanco);
+    padding: 0 32px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .topbar-brand svg { width: 36px; height: 36px; }
+
+  .topbar-brand .brand-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .user-badge {
+    font-size: 12px;
+    color: var(--gris-medio);
+  }
+
+  .user-badge strong { color: var(--oro); }
+
+  .btn-logout {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    padding: 6px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    border-radius: var(--radio);
+    transition: all 0.2s;
+  }
+
+  .btn-logout:hover { border-color: white; color: white; }
+
+  /* NAV */
+  .nav-tabs {
+    background: var(--blanco);
+    border-bottom: 1px solid var(--gris-claro);
+    padding: 0 32px;
+    display: flex;
+    gap: 0;
+  }
+
+  .nav-tab {
+    padding: 16px 24px;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    color: var(--gris);
+    transition: all 0.2s;
+    font-weight: 500;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .nav-tab:hover { color: var(--negro); }
+
+  .nav-tab.active {
+    color: var(--negro);
+    border-bottom-color: var(--oro);
+  }
+
+  /* MAIN CONTENT */
+  .main-content {
+    flex: 1;
+    padding: 32px;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* PAGE HEADERS */
+  .page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--negro);
+    line-height: 1;
+  }
+
+  .page-subtitle {
+    font-size: 12px;
+    color: var(--gris);
+    letter-spacing: 0.05em;
+    margin-top: 6px;
+  }
+
+  /* CARDS GRID */
+  .properties-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+
+  .property-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-claro);
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+    cursor: pointer;
+    border-radius: var(--radio);
+  }
+
+  .property-card:hover {
+    box-shadow: var(--sombra-card);
+    transform: translateY(-2px);
+  }
+
+  .card-header {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid var(--gris-claro);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .card-tipo {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gris);
+    font-weight: 500;
+  }
+
+  .card-num {
+    font-size: 10px;
+    color: var(--gris-medio);
+    letter-spacing: 0.05em;
+  }
+
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 6px;
+    line-height: 1.2;
+  }
+
+  .card-body { padding: 16px 20px; }
+
+  .card-precio {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--negro);
+    margin-bottom: 10px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--gris);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    padding: 3px 10px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .tag-op { background: var(--negro); color: var(--blanco); }
+  .tag-disp { background: #d4edda; color: var(--verde); }
+  .tag-vendido { background: #f8d7da; color: var(--rojo); }
+  .tag-oferta { background: var(--oro-suave); color: #7a5c1e; }
+  .tag-permuta { background: #e3d5f5; color: #5a2d82; }
+  .tag-financ { background: #d1ecf1; color: #0c5460; }
+  .tag-campo { background: #d4edda; color: var(--verde); }
+  .tag-inmo { background: var(--gris-claro); color: var(--gris); }
+
+  .card-footer {
+    padding: 12px 20px;
+    background: var(--crema);
+    border-top: 1px solid var(--gris-claro);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--gris);
+  }
+
+  .card-inmo { font-style: italic; }
+
+  /* FILTERS */
+  .filters-bar {
+    background: var(--blanco);
+    border: 1px solid var(--gris-claro);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    border-radius: var(--radio);
+  }
+
+  .filters-bar select, .filters-bar input {
+    border: 1px solid var(--gris-claro);
+    padding: 8px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--negro);
+    outline: none;
+    background: var(--blanco);
+    border-radius: var(--radio);
+    transition: border-color 0.2s;
+  }
+
+  .filters-bar select:focus, .filters-bar input:focus { border-color: var(--oro); }
+
+  .filter-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gris);
+    margin-right: -4px;
+    font-weight: 500;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 32px;
+  }
+
+  .modal-overlay.open { display: flex; justify-content: center; align-items: flex-start; }
+
+  .modal {
+    background: var(--blanco);
+    width: 100%;
+    max-width: 800px;
+    animation: fadeUp 0.3s ease both;
+    border-radius: var(--radio);
+  }
+
+  .modal-header {
+    background: var(--negro);
+    color: var(--blanco);
+    padding: 24px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+
+  .modal-close:hover { color: white; }
+
+  .modal-body { padding: 32px; }
+
+  .form-section {
+    margin-bottom: 28px;
+  }
+
+  .form-section-title {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gris);
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--gris-claro);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .form-row-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .form-full { grid-column: 1 / -1; }
+
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+  }
+
+  .form-check input[type=checkbox] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--negro);
+  }
+
+  .form-check label {
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--negro);
+  }
+
+  .check-extra {
+    display: none;
+    background: var(--crema);
+    border: 1px solid var(--gris-claro);
+    padding: 12px 16px;
+    margin-top: 8px;
+    border-radius: var(--radio);
+  }
+
+  .check-extra.visible { display: block; }
+
+  .modal-footer {
+    padding: 20px 32px;
+    border-top: 1px solid var(--gris-claro);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background: var(--crema);
+  }
+
+  /* DETAIL VIEW */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+  }
+
+  .detail-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-claro);
+    padding: 28px;
+    border-radius: var(--radio);
+  }
+
+  .detail-section-title {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gris);
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--gris-claro);
+  }
+
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--crema);
+    font-size: 13px;
+  }
+
+  .detail-row:last-child { border-bottom: none; }
+
+  .detail-key { color: var(--gris); }
+  .detail-val { font-weight: 500; text-align: right; max-width: 60%; }
+
+  /* ADMIN PANEL */
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--blanco);
+    border-radius: var(--radio);
+    overflow: hidden;
+  }
+
+  .admin-table th {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gris);
+    font-weight: 600;
+    padding: 14px 20px;
+    text-align: left;
+    background: var(--crema);
+    border-bottom: 1px solid var(--gris-claro);
+  }
+
+  .admin-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--crema);
+    font-size: 13px;
+  }
+
+  .admin-table tr:last-child td { border-bottom: none; }
+  .admin-table tr:hover td { background: var(--crema); }
+
+  .status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .status-active { background: #d4edda; color: var(--verde); }
+  .status-inactive { background: #f8d7da; color: var(--rojo); }
+
+  /* CAMPO FIELDS */
+  .campo-section {
+    display: none;
+    border: 1px solid #c3d9c8;
+    background: #f0f7f1;
+    padding: 20px;
+    margin-top: 16px;
+    border-radius: var(--radio);
+  }
+
+  .campo-section.visible { display: block; }
+
+  .campo-section .form-section-title {
+    color: var(--verde);
+    border-bottom-color: #c3d9c8;
+  }
+
+  /* STATS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-claro);
+    padding: 24px;
+    border-radius: var(--radio);
+  }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--negro);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gris);
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  /* EMPTY */
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--gris);
+  }
+
+  .empty-state-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+  }
+
+  .empty-state h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    margin-bottom: 8px;
+    color: var(--negro);
+  }
+
+  /* ALERT */
+  .alert {
+    padding: 12px 16px;
+    border-radius: var(--radio);
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .alert-success { background: #d4edda; color: var(--verde); border: 1px solid #b8dac1; }
+  .alert-error { background: #f8d7da; color: var(--rojo); border: 1px solid #f0b9c0; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--crema); }
+  ::-webkit-scrollbar-thumb { background: var(--gris-claro); border-radius: 3px; }
+
+  /* Responsive */
+  @media(max-width: 768px) {
+    .main-content { padding: 16px; }
+    .form-row { grid-template-columns: 1fr; }
+    .form-row-3 { grid-template-columns: 1fr; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .topbar { padding: 0 16px; }
+    .nav-tabs { padding: 0 16px; overflow-x: auto; }
+    .nav-tab { padding: 16px 16px; white-space: nowrap; }
+    .properties-grid { grid-template-columns: 1fr; }
+    .login-box { width: 95%; padding: 40px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <!-- Logo XL Inmobiliaria SVG -->
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Techo -->
+        <polyline points="20,100 100,30 180,100" fill="none" stroke="#0a0a0a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="60,100 100,60 140,100" fill="none" stroke="#0a0a0a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Chimenea -->
+        <rect x="112" y="42" width="14" height="20" fill="none" stroke="#0a0a0a" stroke-width="3"/>
+        <!-- XL letters -->
+        <text x="30" y="170" font-family="Georgia,serif" font-size="90" font-weight="bold" fill="#0a0a0a" letter-spacing="-4">XL</text>
+      </svg>
+      <span class="brand-name">Inmobiliaria Xoana Llanos</span>
+      <div class="login-divider"></div>
+      <span class="brand-sub">Sistema de Gestión Interna</span>
+    </div>
+
+    <div class="field-group">
+      <label>Usuario</label>
+      <input type="text" id="login-user" placeholder="nombre de usuario" autocomplete="username">
+    </div>
+    <div class="field-group">
+      <label>Contraseña</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn-primary" onclick="doLogin()">Ingresar</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="20,100 100,30 180,100" fill="none" stroke="#c9a96e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="60,100 100,60 140,100" fill="none" stroke="#c9a96e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="112" y="42" width="14" height="20" fill="none" stroke="#c9a96e" stroke-width="3"/>
+        <text x="30" y="170" font-family="Georgia,serif" font-size="90" font-weight="bold" fill="#c9a96e" letter-spacing="-4">XL</text>
+      </svg>
+      <span class="brand-text">Xoana Llanos</span>
+    </div>
+    <div class="topbar-right">
+      <div class="user-badge">
+        Sesión: <strong id="current-user-name">-</strong>
+        <span id="current-user-role-badge" style="margin-left:6px;font-size:10px;background:#333;padding:2px 8px;border-radius:10px;letter-spacing:0.08em;"></span>
+      </div>
+      <button class="btn-logout" onclick="doLogout()">Salir</button>
+    </div>
+  </div>
+
+  <!-- NAV TABS -->
+  <div class="nav-tabs" id="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('catalogo')">Catálogo</button>
+    <button class="nav-tab" onclick="showPage('nueva')">Nueva Propiedad</button>
+    <button class="nav-tab" onclick="showPage('pedidos')">Pedidos</button>
+    <button class="nav-tab admin-only" onclick="showPage('usuarios')" style="display:none;">Usuarios</button>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-content">
+
+    <!-- ===== CATALOGO ===== -->
+    <div class="page active" id="page-catalogo">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Catálogo de Propiedades</div>
+          <div class="page-subtitle" id="catalog-count">Cargando...</div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid" id="stats-grid"></div>
+
+      <!-- Filters -->
+      <div class="filters-bar">
+        <span class="filter-label">Filtrar por</span>
+        <select id="f-tipo" onchange="renderCatalog()">
+          <option value="">Todos los tipos</option>
+          <option>Casa</option>
+          <option>Departamento</option>
+          <option>Lote</option>
+          <option>Galpon</option>
+          <option>Campo</option>
+        </select>
+        <select id="f-op" onchange="renderCatalog()">
+          <option value="">Venta & Alquiler</option>
+          <option>Venta</option>
+          <option>Alquiler</option>
+        </select>
+        <select id="f-estado" onchange="renderCatalog()">
+          <option value="">Todos los estados</option>
+          <option value="disponible">Disponible</option>
+          <option value="vendido">Vendido / Alquilado</option>
+        </select>
+        <select id="f-inmo" onchange="renderCatalog()">
+          <option value="">Todas las inmobiliarias</option>
+        </select>
+        <input type="text" id="f-buscar" placeholder="Buscar por ubicación o descripción..." style="flex:1;min-width:200px;" oninput="renderCatalog()">
+      </div>
+
+      <!-- Grid -->
+      <div class="properties-grid" id="properties-grid"></div>
+    </div>
+
+    <!-- ===== NUEVA PROPIEDAD ===== -->
+    <div class="page" id="page-nueva">
+      <div class="page-header">
+        <div>
+          <div class="page-title" id="form-page-title">Nueva Propiedad</div>
+          <div class="page-subtitle">Completá los datos para incorporar al catálogo</div>
+        </div>
+      </div>
+
+      <div id="form-alert"></div>
+
+      <div style="background:var(--blanco);border:1px solid var(--gris-claro);padding:32px;border-radius:var(--radio);">
+        <!-- Sección 1: Datos básicos -->
+        <div class="form-section">
+          <div class="form-section-title">Datos Principales</div>
+          <div class="form-row">
+            <div class="field-group">
+              <label>Tipo de propiedad *</label>
+              <select id="f-prop-tipo" onchange="toggleCampoFields()">
+                <option value="">Seleccionar...</option>
+                <option>Casa</option>
+                <option>Departamento</option>
+                <option>Lote</option>
+                <option>Galpon</option>
+                <option>Campo</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>Operación *</label>
+              <select id="f-prop-op">
+                <option value="">Seleccionar...</option>
+                <option>Venta</option>
+                <option>Alquiler</option>
+                <option>Venta / Alquiler</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field-group">
+              <label>Ubicación *</label>
+              <input type="text" id="f-prop-ubic" placeholder="Ej: Lunghi 2500, Tandil">
+            </div>
+            <div class="field-group">
+              <label>Estado *</label>
+              <select id="f-prop-estado">
+                <option value="disponible">Disponible</option>
+                <option value="vendido">Vendido / Alquilado</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field-group">
+              <label>Precio</label>
+              <input type="text" id="f-prop-precio" placeholder="Ej: 150000">
+            </div>
+            <div class="field-group">
+              <label>Moneda</label>
+              <select id="f-prop-moneda">
+                <option value="USD">USD — Dólares</option>
+                <option value="ARS">ARS — Pesos</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Descripción general</label>
+            <textarea id="f-prop-desc" rows="4" placeholder="Descripción cualitativa de la propiedad: ambientes, estado, extras..."></textarea>
+          </div>
+          <div class="field-group">
+            <label>Contacto / Propietario</label>
+            <input type="text" id="f-prop-contacto" placeholder="Nombre y/o teléfono del contacto">
+          </div>
+        </div>
+
+        <!-- Sección 2: Condiciones -->
+        <div class="form-section">
+          <div class="form-section-title">Condiciones de Venta</div>
+          <div>
+            <div class="form-check">
+              <input type="checkbox" id="f-ofertas">
+              <label for="f-ofertas">Acepta / Escucha ofertas</label>
+            </div>
+            <div class="form-check">
+              <input type="checkbox" id="f-permuta" onchange="toggleExtra('permuta')">
+              <label for="f-permuta">Toma permutas</label>
+            </div>
+            <div class="check-extra" id="extra-permuta">
+              <div class="field-group" style="margin:0;">
+                <label>Detalle de permuta aceptada</label>
+                <textarea id="f-permuta-desc" rows="2" placeholder="Ej: Acepta vehículos +2015, departamentos..."></textarea>
+              </div>
+            </div>
+            <div class="form-check">
+              <input type="checkbox" id="f-financ" onchange="toggleExtra('financ')">
+              <label for="f-financ">Ofrece financiación</label>
+            </div>
+            <div class="check-extra" id="extra-financ">
+              <div class="field-group" style="margin:0;">
+                <label>Detalle de financiación</label>
+                <textarea id="f-financ-desc" rows="2" placeholder="Ej: Acepta financiación del 50%, plan en cuotas..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección 3: Inmobiliaria -->
+        <div class="form-section">
+          <div class="form-section-title">Procedencia</div>
+          <div class="form-check">
+            <input type="checkbox" id="f-otra-inmo" onchange="toggleOtraInmo()">
+            <label for="f-otra-inmo">Esta propiedad pertenece a otra inmobiliaria</label>
+          </div>
+          <div class="check-extra" id="extra-inmo">
+            <div class="form-row" style="margin:0;">
+              <div class="field-group" style="margin:0;">
+                <label>Nombre de la inmobiliaria</label>
+                <input type="text" id="f-inmo-nombre" list="inmo-list" placeholder="Ej: Cintia Murilla Propiedades">
+                <datalist id="inmo-list"></datalist>
+              </div>
+              <div class="field-group" style="margin:0;">
+                <label>Contacto de la inmobiliaria</label>
+                <input type="text" id="f-inmo-contacto" placeholder="Teléfono o email">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección 4: CAMPO (oculto por defecto) -->
+        <div class="campo-section" id="campo-fields">
+          <div class="form-section-title">🌾 Datos Específicos de Campo</div>
+          <div class="form-row">
+            <div class="field-group">
+              <label>Accesos — Cerca de ruta (≤ 5km)</label>
+              <select id="c-acceso">
+                <option value="">Sin especificar</option>
+                <option>Sí, a menos de 5km</option>
+                <option>No, más de 5km</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>Alambrados perimetrales</label>
+              <select id="c-alambrado">
+                <option value="">Sin especificar</option>
+                <option>4 hilos o más</option>
+                <option>Menos de 4 hilos</option>
+                <option>Sin alambrar</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row-3">
+            <div class="field-group">
+              <label>Altos y bajos — Inundable</label>
+              <select id="c-inundable">
+                <option value="">Sin especificar</option>
+                <option>No inundable</option>
+                <option>Parcialmente inundable</option>
+                <option>Zona inundable</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>Tosca (cm desde superficie)</label>
+              <input type="text" id="c-tosca" placeholder="Ej: 80 cm (Estudio de suelo)">
+            </div>
+            <div class="field-group">
+              <label>% Desperdicio / Abnegable</label>
+              <input type="text" id="c-desperdicio" placeholder="Ej: 15%">
+            </div>
+          </div>
+          <div class="form-row-3">
+            <div class="field-group">
+              <label>Molinos / Agua</label>
+              <select id="c-molino">
+                <option value="">Sin especificar</option>
+                <option>Sí, con molino</option>
+                <option>Sin molino</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>Pozo de agua</label>
+              <select id="c-pozo">
+                <option value="">Sin especificar</option>
+                <option>Sí, tiene pozo</option>
+                <option>Sin pozo</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>Arroyo</label>
+              <select id="c-arroyo">
+                <option value="">Sin especificar</option>
+                <option>Sí, con arroyo</option>
+                <option>Sin arroyo</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field-group">
+              <label>Casa / Casco</label>
+              <select id="c-casco">
+                <option value="">Sin especificar</option>
+                <option>Sí, tiene casco/casa</option>
+                <option>Sin casa</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>Manga y corrales</label>
+              <select id="c-manga">
+                <option value="">Sin especificar</option>
+                <option>Sí, tiene manga y corrales</option>
+                <option>Sin manga/corrales</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field-group">
+              <label>Ubicación / Jurisdicción</label>
+              <input type="text" id="c-jurisdiccion" placeholder="Ej: Partido de Tandil, Zona Cerro Negro">
+            </div>
+            <div class="field-group">
+              <label>Cercanía a puertos</label>
+              <input type="text" id="c-puertos" placeholder="Ej: 60km Balcarce, 90km San Manuel">
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Mejoras del campo</label>
+            <textarea id="c-mejoras" rows="2" placeholder="Ej: Casa, galpón, caminos internos, luz eléctrica, molino..."></textarea>
+          </div>
+          <div class="field-group">
+            <label>Archivo KMZ / Imagen satelital</label>
+            <input type="text" id="c-kmz" placeholder="Link a imagen satelital o archivo KMZ (Google Earth)">
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:28px;padding-top:20px;border-top:1px solid var(--gris-claro);">
+          <button class="btn-secondary" onclick="resetForm()">Limpiar</button>
+          <button class="btn-gold" onclick="saveProperty()">Guardar Propiedad</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PEDIDOS ===== -->
+    <div class="page" id="page-pedidos">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Pedidos de Clientes</div>
+          <div class="page-subtitle">Búsquedas activas de propiedades</div>
+        </div>
+        <button class="btn-gold" onclick="openPedidoModal()">+ Nuevo Pedido</button>
+      </div>
+
+      <div id="pedidos-list" class="properties-grid"></div>
+    </div>
+
+    <!-- ===== USUARIOS (solo admin) ===== -->
+    <div class="page" id="page-usuarios">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Gestión de Usuarios</div>
+          <div class="page-subtitle">Agentes de la inmobiliaria</div>
+        </div>
+        <button class="btn-gold" onclick="openUserModal()">+ Nuevo Agente</button>
+      </div>
+
+      <table class="admin-table" id="users-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Usuario</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="users-tbody"></tbody>
+      </table>
+    </div>
+
+  </div><!-- /main-content -->
+</div><!-- /app -->
+
+<!-- ===== MODAL DETALLE PROPIEDAD ===== -->
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal" style="max-width:900px;">
+    <div class="modal-header">
+      <span class="modal-title" id="detail-modal-title">Detalle</span>
+      <button class="modal-close" onclick="closeModal('modal-detail')">×</button>
+    </div>
+    <div class="modal-body" id="detail-modal-body"></div>
+    <div class="modal-footer" id="detail-modal-footer"></div>
+  </div>
+</div>
+
+<!-- ===== MODAL PEDIDO ===== -->
+<div class="modal-overlay" id="modal-pedido">
+  <div class="modal" style="max-width:600px;">
+    <div class="modal-header">
+      <span class="modal-title">Nuevo Pedido</span>
+      <button class="modal-close" onclick="closeModal('modal-pedido')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label>Tipo de propiedad buscada</label>
+        <select id="ped-tipo">
+          <option value="">Cualquiera</option>
+          <option>Casa</option>
+          <option>Departamento</option>
+          <option>Lote</option>
+          <option>Galpon</option>
+          <option>Campo</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="field-group">
+          <label>Operación deseada</label>
+          <select id="ped-op">
+            <option>Venta</option>
+            <option>Alquiler</option>
+            <option>Indistinto</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Zona preferida</label>
+          <input type="text" id="ped-zona" placeholder="Ej: Zona norte, Centro...">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field-group">
+          <label>Presupuesto máximo</label>
+          <input type="text" id="ped-precio" placeholder="Ej: 70000">
+        </div>
+        <div class="field-group">
+          <label>Moneda</label>
+          <select id="ped-moneda">
+            <option>USD</option>
+            <option>ARS</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Descripción del pedido / Requisitos</label>
+        <textarea id="ped-desc" rows="4" placeholder="Ej: Casa semi-céntrica 2hab hasta 70 mil USD con patio..."></textarea>
+      </div>
+      <div class="field-group">
+        <label>Contacto del cliente</label>
+        <input type="text" id="ped-contacto" placeholder="Nombre y teléfono del cliente">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-pedido')">Cancelar</button>
+      <button class="btn-gold" onclick="savePedido()">Guardar Pedido</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL USUARIO ===== -->
+<div class="modal-overlay" id="modal-user">
+  <div class="modal" style="max-width:500px;">
+    <div class="modal-header">
+      <span class="modal-title" id="user-modal-title">Nuevo Agente</span>
+      <button class="modal-close" onclick="closeModal('modal-user')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label>Nombre completo *</label>
+        <input type="text" id="u-nombre" placeholder="Nombre del agente">
+      </div>
+      <div class="form-row">
+        <div class="field-group">
+          <label>Usuario *</label>
+          <input type="text" id="u-user" placeholder="nombre.apellido">
+        </div>
+        <div class="field-group">
+          <label>Contraseña *</label>
+          <input type="password" id="u-pass" placeholder="mínimo 6 caracteres">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field-group">
+          <label>Rol</label>
+          <select id="u-rol">
+            <option value="agente">Agente</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Estado</label>
+          <select id="u-estado">
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-user')">Cancelar</button>
+      <button class="btn-gold" onclick="saveUser()">Guardar Agente</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function p() { return '_' + Math.random().toString(36).substr(2,9); }
+
+// ===========================
+// STORAGE: todo en memoria (funciona sin localStorage)
+// ===========================
+
+const DB = {
+  users: [
+    { id: 'u1', nombre: 'Xoana Llanos', user: 'admin', pass: 'xl2024', rol: 'admin', estado: 'activo' }
+  ],
+  properties: [],
+  pedidos: []
+};
+
+function loadData() {
+  return { users: DB.users, properties: DB.properties, pedidos: DB.pedidos };
+}
+function saveUsers(u) { DB.users = u; }
+function saveProperties(pr) { DB.properties = pr; }
+function savePedidos(pe) { DB.pedidos = pe; }
+
+// ===========================
+// INIT: Datos de muestra si es primer uso
+// ===========================
+
+(function init() {
+  let { users, properties, pedidos } = loadData();
+
+  // users ya tiene el admin por defecto en DB
+
+  if (!properties || properties.length === 0) {
+    // Cargar datos del catálogo Excel
+    const initial = [
+      { id: p(), tipo:'Casa', op:'Venta', ubic:'Basilico y colectora sur', estado:'disponible', precio:'50000', moneda:'USD', desc:'2hab con pasillo lateral y depto de 2hab. Todos los servicios. Lote 10x30.', contacto:'', ofertas:false, permuta:false, financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Casa', op:'Venta', ubic:'Jujuy casi Lunghi', estado:'disponible', precio:'70000', moneda:'USD', desc:'2hab cocina comedor integrado. Baño completo. Patio embaldosado con parrilla y entrada vehicular al frente. Todo en PB.', contacto:'', ofertas:false, permuta:false, financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Departamento', op:'Venta', ubic:'9 de Julio y Machado', estado:'disponible', precio:'155000', moneda:'USD', desc:'Depto 1er piso por escalera. 122m2 3hab grandes con placares. 2 baños, 1 en suite y otro para visitas. Patio interno. Totalmente reciclado a nuevo.', contacto:'', ofertas:true, permuta:false, financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Lote', op:'Venta', ubic:'Club EDAL x Segundo Sombra', estado:'disponible', precio:'19500', moneda:'USD', desc:'4 lotes. 10x30 lote en PH. Todos los servicios. El Nogal. Fideicomiso. Están para escriturar.', contacto:'', ofertas:false, permuta:true, permutaDesc:'Vehículos +2015', financ:true, financDesc:'Aceptan financiación del 50%', inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Lote', op:'Venta', ubic:'Segundo Sombra entre Del Medio y Cerrillada (B° Graduados)', estado:'disponible', precio:'45000', moneda:'USD', desc:'Lote 16,24x29,77. Todos los servicios. No tiene asfalto.', contacto:'', ofertas:true, permuta:false, financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Casa', op:'Venta', ubic:'B° Los Horneros, Entre Ríos y Rosales', estado:'disponible', precio:'340000', moneda:'USD', desc:'Casa bella. Lote 2435m2 - 174m2 cubiertos. 3hab 2 baños, aire acondicionado, galería de invierno, quincho, parrilla, pileta, lago artificial, frutales y verduras. Garage.', contacto:'', ofertas:false, permuta:true, permutaDesc:'Acepta vehículos y propiedades', financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Lote', op:'Venta', ubic:'Jujuy (La Helena)', estado:'disponible', precio:'90000', moneda:'USD', desc:'7500 m2. Pozo. Árboles. Con casa a demoler.', contacto:'', ofertas:true, permuta:false, financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Lote', op:'Venta', ubic:'Maritorena 550 (pasando la vía)', estado:'disponible', precio:'29000', moneda:'USD', desc:'Lote 10x65. Casa a demoler. Todos los servicios.', contacto:'', ofertas:true, permuta:false, financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Lote', op:'Venta', ubic:'B° Maggiori', estado:'disponible', precio:'15000', moneda:'USD', desc:'Lote 8x15. PH.', contacto:'', ofertas:false, permuta:false, financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Galpon', op:'Venta / Alquiler', ubic:'La Pampa casi 226', estado:'disponible', precio:'2000000', moneda:'ARS', desc:'3 galpones. 600m2 / 1200m2. Se venden en conjunto o por unidad.', contacto:'Maximo Glushko', ofertas:true, permuta:false, financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Casa', op:'Venta', ubic:'Lunghi 2500', estado:'disponible', precio:'150000', moneda:'USD', desc:'4 hab arriba, 1 hab abajo. 3 baños. Cocina-comedor-living integrado grande. Lote 12x60. Pileta. Depósito. Galería/quincho. Entrada vehicular. 2 plantas. Balcón a la calle.', contacto:'', ofertas:false, permuta:true, permutaDesc:'Acepta depto/casa en parte de pago', financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Casa', op:'Venta', ubic:'Los Patos 104', estado:'disponible', precio:'230000', moneda:'USD', desc:'2 plantas. 4 hab. Balcón. De categoría. 3 baños. Cocina-living-comedor. Estacionamiento.', contacto:'', ofertas:true, permuta:false, financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Departamento', op:'Alquiler', ubic:'Independencia y Peyrel', estado:'disponible', precio:'540000', moneda:'ARS', desc:'1er piso contrafrente. A estrenar. 1 hab. Categoría. No expensas. No municipalidad.', contacto:'', ofertas:false, permuta:false, financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Departamento', op:'Alquiler', ubic:'Paraguay', estado:'disponible', precio:'670000', moneda:'ARS', desc:'1 hab PB. 1 aire acondicionado. 1 smart. Sofá 2 plazas y 1/2. Placard. Calefactores. Cochera y patio. Amoblado.', contacto:'', ofertas:false, permuta:false, financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Departamento', op:'Alquiler', ubic:'Mosconi', estado:'disponible', precio:'700000', moneda:'ARS', desc:'2hab. PB. Calefactor, con patio pequeño. Ingresa en 15 días.', contacto:'', ofertas:false, permuta:false, financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Departamento', op:'Alquiler', ubic:'Pinto entre Roca y 11 de Septiembre', estado:'disponible', precio:'800000', moneda:'ARS', desc:'2hab. Cocina, comedor y 2 baños.', contacto:'', ofertas:false, permuta:false, financ:false, inmo:'', fechaAlta: new Date().toISOString() },
+      // Otras inmobiliarias
+      { id: p(), tipo:'Casa', op:'Alquiler', ubic:'Italia 1200', estado:'disponible', precio:'780000', moneda:'ARS', desc:'Casa en dúplex. 2 hab. 2 baños. 1 patio grande y amplio. Estacionamiento. Acepta perros y niños.', contacto:'', ofertas:false, permuta:false, financ:false, inmo:'Monica Vega Propiedades', fechaAlta: new Date().toISOString() },
+      { id: p(), tipo:'Departamento', op:'Alquiler', ubic:'Saavedra', estado:'disponible', precio:'600000', moneda:'ARS', desc:'Amoblado. Baño completo. Cocina separada. Estacionamiento. 1 hab. Aire acondicionado. Heladera. Smart.', contacto:'', ofertas:false, permuta:false, financ:false, inmo:'Rocio Lago Propiedades', fechaAlta: new Date().toISOString() },
+    ];
+    saveProperties(initial);
+  }
+
+  if (!pedidos || pedidos.length === 0) {
+    pedidos = [
+      { id: p(), tipo:'Casa', op:'Venta', zona:'', precio:'70000', moneda:'USD', desc:'Casa semi céntrica para reciclaje de 2hab, hasta 70 mil USD, con patio.', contacto:'', fecha: new Date().toISOString() }
+    ];
+    savePedidos(pedidos);
+  }
+})();
+
+
+let currentUser = null;
+let editingPropertyId = null;
+let editingUserId = null;
+
+function doLogin() {
+  const u = document.getElementById('login-user').value.trim();
+  const pw = document.getElementById('login-pass').value;
+  const { users } = loadData();
+  const found = users.find(x => x.user === u && x.pass === pw && x.estado === 'activo');
+  if (!found) {
+    document.getElementById('login-error').textContent = 'Usuario o contraseña incorrectos.';
+    return;
+  }
+  currentUser = found;
+  document.getElementById('current-user-name').textContent = found.nombre;
+  document.getElementById('current-user-role-badge').textContent = found.rol === 'admin' ? 'Admin' : 'Agente';
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('app').style.flexDirection = 'column';
+
+  // Mostrar/ocultar tab admin
+  document.querySelectorAll('.admin-only').forEach(el => {
+    el.style.display = found.rol === 'admin' ? '' : 'none';
+  });
+
+  showPage('catalogo');
+  renderAll();
+
+  // Enter key en login
+  document.getElementById('login-user').addEventListener('keydown', e => e.key === 'Enter' && doLogin());
+  document.getElementById('login-pass').addEventListener('keydown', e => e.key === 'Enter' && doLogin());
+}
+
+// Allow Enter key
+document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('login-user').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+function doLogout() {
+  currentUser = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+  document.getElementById('login-error').textContent = '';
+}
+
+// ===========================
+// NAVEGACIÓN
+// ===========================
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const tabs = document.querySelectorAll('.nav-tab');
+  const map = { catalogo:0, nueva:1, pedidos:2, usuarios:3 };
+  if (tabs[map[name]]) tabs[map[name]].classList.add('active');
+
+  if (name === 'catalogo') renderCatalog();
+  if (name === 'usuarios') renderUsers();
+  if (name === 'pedidos') renderPedidos();
+
+  // Si entramos a nueva sin edición, limpiar
+  if (name === 'nueva' && !editingPropertyId) {
+    resetForm();
+    document.getElementById('form-page-title').textContent = 'Nueva Propiedad';
+  }
+}
+
+// ===========================
+// RENDER: ESTADÍSTICAS
+// ===========================
+
+function renderStats() {
+  const { properties } = loadData();
+  const total = properties.length;
+  const disponibles = properties.filter(p => p.estado === 'disponible').length;
+  const vendidos = properties.filter(p => p.estado === 'vendido').length;
+  const propias = properties.filter(p => !p.inmo).length;
+  const terceros = properties.filter(p => p.inmo).length;
+
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">Total propiedades</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--verde)">${disponibles}</div><div class="stat-label">Disponibles</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--rojo)">${vendidos}</div><div class="stat-label">Vendidas / Alquiladas</div></div>
+    <div class="stat-card"><div class="stat-num">${propias}</div><div class="stat-label">Propiedades XL</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--oro)">${terceros}</div><div class="stat-label">De otras inmob.</div></div>
+  `;
+}
+
+// ===========================
+// RENDER: CATÁLOGO
+// ===========================
+
+function renderAll() {
+  renderStats();
+  renderCatalog();
+  renderPedidos();
+  if (currentUser?.rol === 'admin') renderUsers();
+  updateInmoFilter();
+  updateInmoDatalist();
+}
+
+function updateInmoFilter() {
+  const { properties } = loadData();
+  const inmos = [...new Set(properties.filter(p=>p.inmo).map(p=>p.inmo))];
+  const sel = document.getElementById('f-inmo');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Todas las inmobiliarias</option><option value="xl">Solo XL (propias)</option>' +
+    inmos.map(i => `<option value="${i}">${i}</option>`).join('');
+  sel.value = cur;
+}
+
+function updateInmoDatalist() {
+  const { properties } = loadData();
+  const inmos = [...new Set(properties.filter(p=>p.inmo).map(p=>p.inmo))];
+  document.getElementById('inmo-list').innerHTML = inmos.map(i => `<option value="${i}">`).join('');
+}
+
+function renderCatalog() {
+  renderStats();
+  const { properties } = loadData();
+  const tipo = document.getElementById('f-tipo').value;
+  const op = document.getElementById('f-op').value;
+  const estado = document.getElementById('f-estado').value;
+  const inmo = document.getElementById('f-inmo').value;
+  const buscar = document.getElementById('f-buscar').value.toLowerCase();
+
+  let list = properties.filter(p => {
+    if (tipo && p.tipo !== tipo) return false;
+    if (op && !p.op.includes(op)) return false;
+    if (estado && p.estado !== estado) return false;
+    if (inmo === 'xl' && p.inmo) return false;
+    if (inmo && inmo !== 'xl' && p.inmo !== inmo) return false;
+    if (buscar && !(p.ubic.toLowerCase().includes(buscar) || p.desc.toLowerCase().includes(buscar))) return false;
+    return true;
+  });
+
+  document.getElementById('catalog-count').textContent = `${list.length} propiedad${list.length !== 1 ? 'es' : ''} encontrada${list.length !== 1 ? 's' : ''}`;
+
+  const grid = document.getElementById('properties-grid');
+  if (list.length === 0) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <div class="empty-state-icon">🏠</div>
+      <h3>Sin resultados</h3>
+      <p>No se encontraron propiedades con los filtros seleccionados.</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(prop => propertyCard(prop)).join('');
+}
+
+function propertyCard(prop) {
+  const fmt = formatPrecio(prop);
+  const tags = [];
+  tags.push(`<span class="tag tag-op">${prop.op}</span>`);
+  if (prop.estado === 'disponible') tags.push(`<span class="tag tag-disp">Disponible</span>`);
+  else tags.push(`<span class="tag tag-vendido">Vendido/Alquilado</span>`);
+  if (prop.ofertas) tags.push(`<span class="tag tag-oferta">Acepta ofertas</span>`);
+  if (prop.permuta) tags.push(`<span class="tag tag-permuta">Permuta</span>`);
+  if (prop.financ) tags.push(`<span class="tag tag-financ">Financiación</span>`);
+  if (prop.tipo === 'Campo') tags.push(`<span class="tag tag-campo">🌾 Campo</span>`);
+
+  return `<div class="property-card" onclick="openDetail('${prop.id}')">
+    <div class="card-header">
+      <div>
+        <div class="card-tipo">${prop.tipo}</div>
+        <div class="card-title">${prop.ubic}</div>
+      </div>
+      <div class="card-num">${prop.inmo ? '🤝' : '🏠'}</div>
+    </div>
+    <div class="card-body">
+      <div class="card-precio">${fmt}</div>
+      <div class="card-desc">${prop.desc || '<em style="color:var(--gris-medio)">Sin descripción</em>'}</div>
+      <div class="card-tags">${tags.join('')}</div>
+    </div>
+    <div class="card-footer">
+      <span class="card-inmo">${prop.inmo || 'XL Inmobiliaria'}</span>
+      <span>${formatDate(prop.fechaAlta)}</span>
+    </div>
+  </div>`;
+}
+
+function formatPrecio(prop) {
+  if (!prop.precio) return '—';
+  const n = Number(prop.precio.toString().replace(/[^0-9.]/g,''));
+  if (isNaN(n) || n === 0) return prop.precio;
+  if (prop.moneda === 'USD') return 'USD ' + n.toLocaleString('es-AR');
+  return 'ARS ' + n.toLocaleString('es-AR');
+}
+
+function formatDate(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleDateString('es-AR');
+}
+
+// ===========================
+// DETALLE
+// ===========================
+
+function openDetail(id) {
+  const { properties } = loadData();
+  const prop = properties.find(p => p.id === id);
+  if (!prop) return;
+
+  document.getElementById('detail-modal-title').textContent = prop.ubic;
+
+  let campoHtml = '';
+  if (prop.tipo === 'Campo' && prop.campo) {
+    const c = prop.campo;
+    campoHtml = `<div class="detail-card" style="margin-top:20px;border-color:#c3d9c8;">
+      <div class="detail-section-title" style="color:var(--verde)">🌾 Datos de Campo</div>
+      ${detailRow('Acceso ruta', c.acceso)}
+      ${detailRow('Alambrados', c.alambrado)}
+      ${detailRow('Inundable', c.inundable)}
+      ${detailRow('Tosca', c.tosca)}
+      ${detailRow('% Desperdicio', c.desperdicio)}
+      ${detailRow('Molino / Agua', c.molino)}
+      ${detailRow('Pozo', c.pozo)}
+      ${detailRow('Arroyo', c.arroyo)}
+      ${detailRow('Casa / Casco', c.casco)}
+      ${detailRow('Manga y corrales', c.manga)}
+      ${detailRow('Jurisdicción', c.jurisdiccion)}
+      ${detailRow('Cercanía puertos', c.puertos)}
+      ${detailRow('Mejoras', c.mejoras)}
+      ${c.kmz ? `<div class="detail-row"><span class="detail-key">KMZ / Satelital</span><a href="${c.kmz}" target="_blank" style="color:var(--verde)">Ver enlace</a></div>` : ''}
+    </div>`;
+  }
+
+  document.getElementById('detail-modal-body').innerHTML = `
+    <div class="detail-grid">
+      <div>
+        <div class="detail-card">
+          <div class="detail-section-title">Información General</div>
+          ${detailRow('Tipo', prop.tipo)}
+          ${detailRow('Operación', prop.op)}
+          ${detailRow('Estado', prop.estado === 'disponible' ? '✅ Disponible' : '🔴 Vendido / Alquilado')}
+          ${detailRow('Precio', formatPrecio(prop))}
+          ${detailRow('Acepta ofertas', prop.ofertas ? 'Sí' : 'No')}
+          ${prop.permuta ? detailRow('Permuta', prop.permutaDesc || 'Sí') : ''}
+          ${prop.financ ? detailRow('Financiación', prop.financDesc || 'Sí') : ''}
+          ${prop.contacto ? detailRow('Contacto', prop.contacto) : ''}
+        </div>
+        ${prop.desc ? `<div class="detail-card" style="margin-top:20px;">
+          <div class="detail-section-title">Descripción</div>
+          <p style="font-size:14px;line-height:1.6;color:var(--negro)">${prop.desc}</p>
+        </div>` : ''}
+        ${campoHtml}
+      </div>
+      <div>
+        <div class="detail-card">
+          <div class="detail-section-title">Procedencia</div>
+          ${detailRow('Inmobiliaria', prop.inmo || 'XL — Xoana Llanos')}
+          ${prop.inmoContacto ? detailRow('Contacto inmo.', prop.inmoContacto) : ''}
+          ${detailRow('Alta', formatDate(prop.fechaAlta))}
+        </div>
+        <div class="detail-card" style="margin-top:16px;">
+          <div class="detail-section-title">Condiciones</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
+            ${prop.ofertas ? '<span class="tag tag-oferta" style="display:inline-block">✓ Acepta ofertas</span>' : ''}
+            ${prop.permuta ? '<span class="tag tag-permuta" style="display:inline-block">✓ Toma permutas</span>' : ''}
+            ${prop.financ ? '<span class="tag tag-financ" style="display:inline-block">✓ Ofrece financiación</span>' : ''}
+            ${!prop.ofertas && !prop.permuta && !prop.financ ? '<span style="color:var(--gris-medio)">Sin condiciones especiales</span>' : ''}
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  const footer = document.getElementById('detail-modal-footer');
+  const editBtn = (currentUser?.rol === 'admin' || prop.inmo === '' || !prop.inmo)
+    ? `<button class="btn-gold" onclick="editProperty('${prop.id}')">Editar</button>`
+    : '';
+  const deleteBtn = currentUser?.rol === 'admin'
+    ? `<button class="btn-danger" onclick="deleteProperty('${prop.id}')">Eliminar</button>`
+    : '';
+  const estadoLabel = prop.estado === 'disponible' ? 'Marcar Vendido/Alquilado' : 'Marcar Disponible';
+  footer.innerHTML = `
+    <div style="flex:1">${deleteBtn}</div>
+    <button class="btn-secondary" onclick="toggleEstado('${prop.id}')">${estadoLabel}</button>
+    ${editBtn}
+    <button class="btn-secondary" onclick="closeModal('modal-detail')">Cerrar</button>
+  `;
+
+  document.getElementById('modal-detail').classList.add('open');
+}
+
+function detailRow(k, v) {
+  if (!v) return '';
+  return `<div class="detail-row"><span class="detail-key">${k}</span><span class="detail-val">${v}</span></div>`;
+}
+
+function toggleEstado(id) {
+  const { properties } = loadData();
+  const prop = properties.find(p => p.id === id);
+  if (!prop) return;
+  prop.estado = prop.estado === 'disponible' ? 'vendido' : 'disponible';
+  saveProperties(properties);
+  closeModal('modal-detail');
+  renderCatalog();
+  renderStats();
+}
+
+function deleteProperty(id) {
+  if (!confirm('¿Eliminar esta propiedad del catálogo?')) return;
+  let { properties } = loadData();
+  properties = properties.filter(p => p.id !== id);
+  saveProperties(properties);
+  closeModal('modal-detail');
+  renderAll();
+}
+
+// ===========================
+// FORMULARIO PROPIEDAD
+// ===========================
+
+function toggleCampoFields() {
+  const tipo = document.getElementById('f-prop-tipo').value;
+  document.getElementById('campo-fields').classList.toggle('visible', tipo === 'Campo');
+}
+
+function toggleExtra(key) {
+  const checked = document.getElementById('f-' + key).checked;
+  document.getElementById('extra-' + key).classList.toggle('visible', checked);
+}
+
+function toggleOtraInmo() {
+  const checked = document.getElementById('f-otra-inmo').checked;
+  document.getElementById('extra-inmo').classList.toggle('visible', checked);
+}
+
+function resetForm() {
+  editingPropertyId = null;
+  document.getElementById('form-page-title').textContent = 'Nueva Propiedad';
+  ['f-prop-tipo','f-prop-op','f-prop-ubic','f-prop-estado','f-prop-precio','f-prop-moneda',
+   'f-prop-desc','f-prop-contacto','f-permuta-desc','f-financ-desc','f-inmo-nombre','f-inmo-contacto',
+   'c-acceso','c-alambrado','c-inundable','c-tosca','c-desperdicio','c-molino','c-pozo',
+   'c-arroyo','c-casco','c-manga','c-jurisdiccion','c-puertos','c-mejoras','c-kmz'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = el.tagName === 'SELECT' ? el.options[0]?.value || '' : '';
+  });
+  ['f-ofertas','f-permuta','f-financ','f-otra-inmo'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.checked = false;
+  });
+  ['extra-permuta','extra-financ','extra-inmo'].forEach(id => {
+    document.getElementById(id).classList.remove('visible');
+  });
+  document.getElementById('campo-fields').classList.remove('visible');
+  document.getElementById('f-prop-moneda').value = 'USD';
+  document.getElementById('f-prop-estado').value = 'disponible';
+  document.getElementById('form-alert').innerHTML = '';
+}
+
+function editProperty(id) {
+  closeModal('modal-detail');
+  const { properties } = loadData();
+  const prop = properties.find(p => p.id === id);
+  if (!prop) return;
+
+  resetForm();
+  editingPropertyId = id;
+  document.getElementById('form-page-title').textContent = 'Editar Propiedad';
+  showPage('nueva');
+
+  document.getElementById('f-prop-tipo').value = prop.tipo;
+  document.getElementById('f-prop-op').value = prop.op;
+  document.getElementById('f-prop-ubic').value = prop.ubic;
+  document.getElementById('f-prop-estado').value = prop.estado;
+  document.getElementById('f-prop-precio').value = prop.precio;
+  document.getElementById('f-prop-moneda').value = prop.moneda;
+  document.getElementById('f-prop-desc').value = prop.desc || '';
+  document.getElementById('f-prop-contacto').value = prop.contacto || '';
+  document.getElementById('f-ofertas').checked = prop.ofertas;
+  document.getElementById('f-permuta').checked = prop.permuta;
+  document.getElementById('f-financ').checked = prop.financ;
+  if (prop.permuta) { document.getElementById('extra-permuta').classList.add('visible'); document.getElementById('f-permuta-desc').value = prop.permutaDesc||''; }
+  if (prop.financ) { document.getElementById('extra-financ').classList.add('visible'); document.getElementById('f-financ-desc').value = prop.financDesc||''; }
+  if (prop.inmo) {
+    document.getElementById('f-otra-inmo').checked = true;
+    document.getElementById('extra-inmo').classList.add('visible');
+    document.getElementById('f-inmo-nombre').value = prop.inmo;
+    document.getElementById('f-inmo-contacto').value = prop.inmoContacto || '';
+  }
+  if (prop.tipo === 'Campo') {
+    document.getElementById('campo-fields').classList.add('visible');
+    if (prop.campo) {
+      const c = prop.campo;
+      ['acceso','alambrado','inundable','tosca','desperdicio','molino','pozo','arroyo','casco','manga','jurisdiccion','puertos','mejoras','kmz']
+        .forEach(k => { const el = document.getElementById('c-'+k); if(el && c[k]) el.value = c[k]; });
+    }
+  }
+}
+
+function saveProperty() {
+  const tipo = document.getElementById('f-prop-tipo').value;
+  const op = document.getElementById('f-prop-op').value;
+  const ubic = document.getElementById('f-prop-ubic').value.trim();
+
+  if (!tipo || !op || !ubic) {
+    showFormAlert('Completá los campos obligatorios: Tipo, Operación y Ubicación.', 'error');
+    return;
+  }
+
+  const inmoCheck = document.getElementById('f-otra-inmo').checked;
+  const inmo = inmoCheck ? document.getElementById('f-inmo-nombre').value.trim() : '';
+
+  const prop = {
+    tipo, op,
+    ubic,
+    estado: document.getElementById('f-prop-estado').value,
+    precio: document.getElementById('f-prop-precio').value.trim(),
+    moneda: document.getElementById('f-prop-moneda').value,
+    desc: document.getElementById('f-prop-desc').value.trim(),
+    contacto: document.getElementById('f-prop-contacto').value.trim(),
+    ofertas: document.getElementById('f-ofertas').checked,
+    permuta: document.getElementById('f-permuta').checked,
+    permutaDesc: document.getElementById('f-permuta-desc').value.trim(),
+    financ: document.getElementById('f-financ').checked,
+    financDesc: document.getElementById('f-financ-desc').value.trim(),
+    inmo,
+    inmoContacto: inmoCheck ? document.getElementById('f-inmo-contacto').value.trim() : '',
+  };
+
+  if (tipo === 'Campo') {
+    prop.campo = {
+      acceso: document.getElementById('c-acceso').value,
+      alambrado: document.getElementById('c-alambrado').value,
+      inundable: document.getElementById('c-inundable').value,
+      tosca: document.getElementById('c-tosca').value.trim(),
+      desperdicio: document.getElementById('c-desperdicio').value.trim(),
+      molino: document.getElementById('c-molino').value,
+      pozo: document.getElementById('c-pozo').value,
+      arroyo: document.getElementById('c-arroyo').value,
+      casco: document.getElementById('c-casco').value,
+      manga: document.getElementById('c-manga').value,
+      jurisdiccion: document.getElementById('c-jurisdiccion').value.trim(),
+      puertos: document.getElementById('c-puertos').value.trim(),
+      mejoras: document.getElementById('c-mejoras').value.trim(),
+      kmz: document.getElementById('c-kmz').value.trim(),
+    };
+  }
+
+  let { properties } = loadData();
+  if (editingPropertyId) {
+    const idx = properties.findIndex(p => p.id === editingPropertyId);
+    if (idx !== -1) { prop.id = editingPropertyId; prop.fechaAlta = properties[idx].fechaAlta; properties[idx] = prop; }
+    showFormAlert('Propiedad actualizada correctamente.', 'success');
+  } else {
+    prop.id = p();
+    prop.fechaAlta = new Date().toISOString();
+    properties.push(prop);
+    showFormAlert('Propiedad guardada correctamente.', 'success');
+  }
+
+  saveProperties(properties);
+  editingPropertyId = null;
+  document.getElementById('form-page-title').textContent = 'Nueva Propiedad';
+  updateInmoFilter();
+  updateInmoDatalist();
+
+  setTimeout(() => { resetForm(); showPage('catalogo'); }, 1200);
+}
+
+function showFormAlert(msg, type) {
+  document.getElementById('form-alert').innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+}
+
+// ===========================
+// PEDIDOS
+// ===========================
+
+function renderPedidos() {
+  const { pedidos } = loadData();
+  const grid = document.getElementById('pedidos-list');
+  if (pedidos.length === 0) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <div class="empty-state-icon">📋</div>
+      <h3>Sin pedidos registrados</h3>
+      <p>Agregá el primer pedido de un cliente.</p>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = pedidos.map(ped => `
+    <div class="property-card">
+      <div class="card-header">
+        <div>
+          <div class="card-tipo">${ped.tipo || 'Cualquier tipo'} · ${ped.op}</div>
+          <div class="card-title">${ped.zona || 'Zona no especificada'}</div>
+        </div>
+        <div class="card-num">📋</div>
+      </div>
+      <div class="card-body">
+        <div class="card-precio">${ped.precio ? ped.moneda + ' ' + Number(ped.precio).toLocaleString('es-AR') : 'Sin tope'}</div>
+        <div class="card-desc">${ped.desc}</div>
+        ${ped.contacto ? `<div style="margin-top:10px;font-size:12px;color:var(--gris)">📞 ${ped.contacto}</div>` : ''}
+      </div>
+      <div class="card-footer">
+        <span>${formatDate(ped.fecha)}</span>
+        ${currentUser?.rol === 'admin' ? `<button class="btn-danger" onclick="deletePedido('${ped.id}')" style="font-size:11px;padding:4px 10px;">Eliminar</button>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function openPedidoModal() {
+  ['ped-tipo','ped-op','ped-zona','ped-precio','ped-moneda','ped-desc','ped-contacto'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = el.tagName==='SELECT'?el.options[0]?.value:'';
+  });
+  document.getElementById('modal-pedido').classList.add('open');
+}
+
+function savePedido() {
+  const desc = document.getElementById('ped-desc').value.trim();
+  if (!desc) { alert('Ingresá una descripción del pedido.'); return; }
+
+  const ped = {
+    id: p(),
+    tipo: document.getElementById('ped-tipo').value,
+    op: document.getElementById('ped-op').value,
+    zona: document.getElementById('ped-zona').value.trim(),
+    precio: document.getElementById('ped-precio').value.trim(),
+    moneda: document.getElementById('ped-moneda').value,
+    desc,
+    contacto: document.getElementById('ped-contacto').value.trim(),
+    fecha: new Date().toISOString(),
+  };
+
+  let { pedidos } = loadData();
+  pedidos.push(ped);
+  savePedidos(pedidos);
+  closeModal('modal-pedido');
+  renderPedidos();
+}
+
+function deletePedido(id) {
+  if (!confirm('¿Eliminar este pedido?')) return;
+  let { pedidos } = loadData();
+  pedidos = pedidos.filter(p => p.id !== id);
+  savePedidos(pedidos);
+  renderPedidos();
+}
+
+// ===========================
+// USUARIOS (solo admin)
+// ===========================
+
+function renderUsers() {
+  const { users } = loadData();
+  document.getElementById('users-tbody').innerHTML = users.map(u => `
+    <tr>
+      <td><strong>${u.nombre}</strong></td>
+      <td><code style="background:var(--crema);padding:2px 8px;border-radius:4px;">${u.user}</code></td>
+      <td><span class="tag ${u.rol==='admin'?'tag-op':'tag-inmo'}" style="border-radius:20px;">${u.rol}</span></td>
+      <td><span class="status-badge status-${u.estado==='activo'?'active':'inactive'}">${u.estado}</span></td>
+      <td style="display:flex;gap:8px;">
+        <button class="btn-secondary" onclick="editUser('${u.id}')" style="padding:6px 12px;font-size:11px;">Editar</button>
+        ${u.id !== currentUser.id ? `<button class="btn-danger" onclick="deleteUser('${u.id}')">Eliminar</button>` : ''}
+      </td>
+    </tr>`).join('');
+}
+
+function openUserModal() {
+  editingUserId = null;
+  document.getElementById('user-modal-title').textContent = 'Nuevo Agente';
+  ['u-nombre','u-user','u-pass'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('u-rol').value = 'agente';
+  document.getElementById('u-estado').value = 'activo';
+  document.getElementById('modal-user').classList.add('open');
+}
+
+function editUser(id) {
+  const { users } = loadData();
+  const u = users.find(x => x.id === id);
+  if (!u) return;
+  editingUserId = id;
+  document.getElementById('user-modal-title').textContent = 'Editar Agente';
+  document.getElementById('u-nombre').value = u.nombre;
+  document.getElementById('u-user').value = u.user;
+  document.getElementById('u-pass').value = u.pass;
+  document.getElementById('u-rol').value = u.rol;
+  document.getElementById('u-estado').value = u.estado;
+  document.getElementById('modal-user').classList.add('open');
+}
+
+function saveUser() {
+  const nombre = document.getElementById('u-nombre').value.trim();
+  const user = document.getElementById('u-user').value.trim();
+  const pass = document.getElementById('u-pass').value.trim();
+  if (!nombre || !user || !pass) { alert('Completá todos los campos.'); return; }
+  if (pass.length < 4) { alert('La contraseña debe tener al menos 4 caracteres.'); return; }
+
+  let { users } = loadData();
+  const existing = users.find(u => u.user === user && u.id !== editingUserId);
+  if (existing) { alert('Ese nombre de usuario ya existe.'); return; }
+
+  if (editingUserId) {
+    const idx = users.findIndex(u => u.id === editingUserId);
+    if (idx !== -1) {
+      users[idx] = { ...users[idx], nombre, user, pass,
+        rol: document.getElementById('u-rol').value,
+        estado: document.getElementById('u-estado').value };
+    }
+  } else {
+    users.push({
+      id: p(), nombre, user, pass,
+      rol: document.getElementById('u-rol').value,
+      estado: document.getElementById('u-estado').value
+    });
+  }
+
+  saveUsers(users);
+  closeModal('modal-user');
+  renderUsers();
+  editingUserId = null;
+}
+
+function deleteUser(id) {
+  if (id === currentUser.id) { alert('No podés eliminar tu propia cuenta.'); return; }
+  if (!confirm('¿Eliminar este agente?')) return;
+  let { users } = loadData();
+  users = users.filter(u => u.id !== id);
+  saveUsers(users);
+  renderUsers();
+}
+
+// ===========================
+// MODALES
+// ===========================
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+// Cerrar al hacer click en overlay
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+});
+
+// Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+});
+</script>
+</body>
+</html>
